@@ -1,0 +1,30 @@
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333" # REST
+      - "6334:6334" # gRPC (used by the .NET app)
+    volumes:
+      - qdrant_storage:/qdrant/storage
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    # The chat model itself is pulled by the .NET app on startup (see DocChat/Infrastructure/OllamaClientFactory.cs),
+    # not here, so the whole "load models" story lives in one place.
+
+  embeddings:
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.9
+    command: ["--model-id", "${TEI_MODEL_ID:-BAAI/bge-small-en-v1.5}"]
+    ports:
+      - "8080:80"
+    volumes:
+      - tei_cache:/data
+
+volumes:
+  qdrant_storage:
+  ollama_data:
+  tei_cache:

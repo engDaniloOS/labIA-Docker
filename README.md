@@ -5,6 +5,7 @@ A didactic terminal chat that answers questions grounded in your own documents (
 [Microsoft.Extensions.AI](https://learn.microsoft.com/dotnet/ai/), running entirely against local
 models served from Docker containers — no cloud LLM API required.
 
+### AI First
 ## How it works
 
 - **Agentic RAG**: the AI agent itself decides, via tool-calling, when to search the knowledge
